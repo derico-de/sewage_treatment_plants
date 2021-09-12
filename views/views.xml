@@ -1,0 +1,93 @@
+<odoo>
+
+  <record id="view_partner_tree_extended" model="ir.ui.view">
+    <field name="name">res.partner.tree.extended</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_tree"/>
+    <field name="arch" type="xml">
+      <field name="phone" position="after">
+        <field name="mobile" class="o_force_ltr" optional="show"/>
+      </field>
+      <field name="active" position="before">
+        <field name="route_name" optional="show"/>
+        <field name="route_position" optional="show"/>
+      </field>
+      <xpath expr="//tree" position="attributes">
+        <attribute name="default_order">route_position</attribute>
+      </xpath>
+    </field>
+
+  </record>
+
+
+  <record id="view_partner_form_extended" model="ir.ui.view">
+    <field name="name">res.partner.form.extended</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.view_partner_form"/>
+    <field name="arch" type="xml">
+      <field name="category_id" position="after">
+        <field name="route_name" optional="show"/>
+        <field name="route_position" optional="show"/>
+      </field>
+    </field>
+
+  </record>
+
+
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="sewage_treatment_plants.list">
+      <field name="name">sewage_treatment_plants list</field>
+      <field name="model">sewage_treatment_plants.sewage_treatment_plants</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="sewage_treatment_plants.action_window">
+      <field name="name">sewage_treatment_plants window</field>
+      <field name="res_model">sewage_treatment_plants.sewage_treatment_plants</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="sewage_treatment_plants.action_server">
+      <field name="name">sewage_treatment_plants server</field>
+      <field name="model_id" ref="model_sewage_treatment_plants_sewage_treatment_plants"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="sewage_treatment_plants" id="sewage_treatment_plants.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="sewage_treatment_plants.menu_1" parent="sewage_treatment_plants.menu_root"/>
+    <menuitem name="Menu 2" id="sewage_treatment_plants.menu_2" parent="sewage_treatment_plants.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="sewage_treatment_plants.menu_1_list" parent="sewage_treatment_plants.menu_1"
+              action="sewage_treatment_plants.action_window"/>
+    <menuitem name="Server to list" id="sewage_treatment_plants" parent="sewage_treatment_plants.menu_2"
+              action="sewage_treatment_plants.action_server"/>
+-->
+</odoo>
