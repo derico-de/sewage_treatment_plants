@@ -8,6 +8,11 @@
       <field name="phone" position="before">
         <field name="ref" optional="show"/>
       </field>
+      <field name="city" position="before">
+        <field name="street" optional="show"/>
+        <field name="street2" optional="hide"/>
+        <field name="zip" optional="hide"/>
+      </field>
       <field name="phone" position="after">
         <field name="mobile" class="o_force_ltr" optional="show"/>
       </field>
