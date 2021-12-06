@@ -17,6 +17,8 @@
         <field name="mobile" class="o_force_ltr" optional="show"/>
       </field>
       <field name="active" position="before">
+        <field name="landkreis" optional="show"/>
+        <field name="azv" optional="show"/>
         <field name="route_name" optional="show"/>
         <field name="route_position" optional="show"/>
       </field>
@@ -36,6 +38,8 @@
       <field name="category_id" position="after">
         <field name="route_name" optional="show"/>
         <field name="route_position" optional="show"/>
+        <field name="landkreis" optional="show"/>
+        <field name="azv" optional="show"/>
       </field>
     </field>
 

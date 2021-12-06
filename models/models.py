@@ -27,9 +27,43 @@ class PartnerBankAccountInfo(models.Model):
             bank = partner.bank_ids[0]
             acc_number = bank.acc_number.replace(" ", "")
             # short info is only the last 4 digits
-            partner.bank_acc_info_short = "{0} / IBAN: {1}XX XXXX XXXX XXXX XX{2} {3}".format(
-                bank.bank_name, acc_number[:2], acc_number[-4:-2], acc_number[-2:]
+            partner.bank_acc_info_short = (
+                "{0} / IBAN: {1}XX XXXX XXXX XXXX XX{2} {3}".format(
+                    bank.bank_name, acc_number[:2], acc_number[-4:-2], acc_number[-2:]
+                )
             )
+
+
+class PartnerAzvLk(models.Model):
+    _inherit = "res.partner"
+    type = fields.Selection(
+        [
+            ("contact", "Contact"),
+            ("abwasserzweckverband", "Abwasserzweckverband"),
+            ("landkreis", "Landkreis"),
+            ("invoice", "Invoice Address"),
+            ("delivery", "Delivery Address"),
+            ("other", "Other Address"),
+            ("private", "Private Address"),
+        ],
+        string="Address Type",
+        default="contact",
+        help="Invoice & Delivery addresses are used in sales orders. Private addresses are only visible by authorized users.",
+    )
+    azv = fields.Many2one(
+        "res.partner",
+        string="Abwasserzweckverband",
+        context={"default_type": "abwasserzweckverband"},
+        domain="[('type','=','abwasserzweckverband')]",
+        index=True,
+    )
+    landkreis = fields.Many2one(
+        "res.partner",
+        string="Landkreis",
+        context={"default_type": "landkreis"},
+        domain="[('type','=','landkreis')]",
+        index=True,
+    )
 
 
 # class sewage_treatment_plants(models.Model):
