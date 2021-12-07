@@ -19,19 +19,21 @@ class PartnerBankAccountInfo(models.Model):
 
     @api.depends("bank_ids.acc_number")
     def _compute_bank_acc_info_short(self):
-        # import pdb; pdb.set_trace()  # NOQA: E702
         for partner in self:
             if not partner.bank_ids:
                 partner.bank_acc_info_short = ""
                 return
             bank = partner.bank_ids[0]
+            bank_name = bank.bank_name or ""
             acc_number = bank.acc_number.replace(" ", "")
-            # short info is only the last 4 digits
+            # short info is only parts of the IBAN with optinal bank name
             partner.bank_acc_info_short = (
-                "{0} / IBAN: {1}XX XXXX XXXX XXXX XX{2} {3}".format(
-                    bank.bank_name, acc_number[:2], acc_number[-4:-2], acc_number[-2:]
+                "IBAN: {0}XX XXXX XXXX XXXX XX{1} {2}".format(
+                    acc_number[:2], acc_number[-4:-2], acc_number[-2:]
                 )
             )
+            if bank_name:
+                partner.bank_acc_info_short = partner.bank_acc_info_short + " bei der {0}.".format(bank_name)
 
 
 class PartnerAzvLk(models.Model):
