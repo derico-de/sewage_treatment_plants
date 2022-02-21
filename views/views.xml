@@ -45,6 +45,22 @@
 
   </record>
 
+  <record id="contract_contract_tree_view_stp" model="ir.ui.view">
+      <field name="name">contract.contract tree view (in contract) STP</field>
+      <field name="model">contract.contract</field>
+    <field name="inherit_id" ref="contract.contract_contract_tree_view"/>
+      <field name="arch" type="xml">
+          <tree>
+              <field name="name" string="Name" />
+              <field name="code" />
+              <field name="journal_id" groups="account.group_account_user" />
+              <field name="partner_id" />
+              <field name="active" invisible="1" />
+              <field name="company_id" groups="base.group_multi_company" />
+              <field name="pricelist_id" />
+          </tree>
+      </field>
+  </record>
 
     <!-- explicit list view definition -->
 <!--
