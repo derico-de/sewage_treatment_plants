@@ -19,7 +19,8 @@
     'version': '0.2',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'fieldservice', 'contract'],
+    # 'depends': ['base', 'fieldservice', 'contract'],
+    'depends': ['base', 'contract'],
 
     # always loaded
     'data': [
