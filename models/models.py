@@ -1,4 +1,7 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tests import Form
+from odoo.tools.translate import _
 
 
 class PartnerRouteFields(models.Model):
@@ -38,6 +41,7 @@ class PartnerBankAccountInfo(models.Model):
 
 class PartnerAzvLk(models.Model):
     _inherit = "res.partner"
+    _description = "Extend type selection list to add Abwasserzweckverband & co"
     type = fields.Selection(
         [
             ("contact", "Contact"),
@@ -66,6 +70,94 @@ class PartnerAzvLk(models.Model):
         domain="[('type','=','landkreis')]",
         index=True,
     )
+
+
+class ContractContractSTP(models.Model):
+    _inherit = "contract.contract"
+    _description = "prevent setting invoice date from contracts."
+
+    # override to disable setting of invoice date from contracts:
+    def _prepare_invoice(self, date_invoice, journal=None):
+        """Prepare in a Form the values for the generated invoice record.
+
+        :return: A tuple with the vals dictionary and the Form with the
+          preloaded values for being used in lines.
+        """
+        self.ensure_one()
+        if not journal:
+            journal = (
+                self.journal_id
+                if self.journal_id.type == self.contract_type
+                else self.env["account.journal"].search(
+                    [
+                        ("type", "=", self.contract_type),
+                        ("company_id", "=", self.company_id.id),
+                    ],
+                    limit=1,
+                )
+            )
+        if not journal:
+            raise ValidationError(
+                _("Please define a %s journal for the company '%s'.")
+                % (self.contract_type, self.company_id.name or "")
+            )
+        invoice_type = "out_invoice"
+        if self.contract_type == "purchase":
+            invoice_type = "in_invoice"
+        move_form = Form(
+            self.env["account.move"]
+            .with_company(self.company_id)
+            .with_context(default_move_type=invoice_type)
+        )
+        move_form.partner_id = self.invoice_partner_id
+        if self.payment_term_id:
+            move_form.invoice_payment_term_id = self.payment_term_id
+        if self.fiscal_position_id:
+            move_form.fiscal_position_id = self.fiscal_position_id
+        invoice_vals = move_form._values_to_save(all_fields=True)
+        invoice_vals.update(
+            {
+                "ref": self.code,
+                "company_id": self.company_id.id,
+                "currency_id": self.currency_id.id,
+                # "invoice_date": date_invoice,
+                "journal_id": journal.id,
+                "invoice_origin": self.name,
+                "invoice_user_id": self.user_id.id,
+            }
+        )
+        return invoice_vals, move_form
+
+
+class SewageTreatmentPlant(models.Model):
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _name = "stm.stp"
+
+    name = fields.Char(string="Name", required="True")
+    partner_id = fields.Many2one("res.partner", string="Partner")
+
+
+class SewageTreatmentPlantMaintenance(models.Model):
+    _inherit = ["fsm.order"]
+
+    # name = fields.Char(string="Name", required="True")
+    # partner_id = fields.Many2one("res.partner", string="Partner")
+
+    datetime = fields.Datetime(string="Datum/Zeit")
+    temperature = fields.Char('Temperatur in ℃')
+    wheather = fields.Selection([
+        ('sonne', 'Sonne'),
+        ('regen', 'Regen'),
+        ('bedeckt', 'Bedeckt'),
+    ], string='Wetter')
+    malfunctions = fields.Char('Mängel')
+
+    bca_operating_hours = fields.Integer('Operating Hours')
+    bca_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
+    bca_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
+    phb_operating_hours = fields.Integer('Operating Hours')
+    phb_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
+    phb_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
 
 
 # class sewage_treatment_plants(models.Model):

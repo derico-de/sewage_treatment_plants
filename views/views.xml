@@ -56,6 +56,25 @@
       </field>
   </record>
 
+  <record id="fsm_order_form_stp" model="ir.ui.view">
+    <field name="name">fsm.order.form.stp</field>
+    <field name="model">fsm.order</field>
+    <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+    <field name="arch" type="xml">
+      <page name="planning_page" position="before">
+        <page string="Protocol" name="protocol_page">
+          <group>
+            <field name="datetime" />
+            <field name="temperature" />
+            <field name="wheather" />
+            <field name="malfunctions" />
+          </group>
+        </page>
+      </page>
+    </field>
+
+  </record>
+
     <!-- explicit list view definition -->
 <!--
     <record model="ir.ui.view" id="sewage_treatment_plants.list">
