@@ -149,27 +149,27 @@ class SewageTreatmentPlant(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner")
 
 
-# class SewageTreatmentPlantMaintenance(models.Model):
-#     _inherit = ["fsm.order"]
+class SewageTreatmentPlantMaintenance(models.Model):
+    _inherit = ["fsm.order"]
 
-#     # name = fields.Char(string="Name", required="True")
-#     # partner_id = fields.Many2one("res.partner", string="Partner")
+    # name = fields.Char(string="Name", required="True")
+    # partner_id = fields.Many2one("res.partner", string="Partner")
 
-#     datetime = fields.Datetime(string="Datum/Zeit")
-#     temperature = fields.Char('Temperatur in ℃')
-#     wheather = fields.Selection([
-#         ('sonne', 'Sonne'),
-#         ('regen', 'Regen'),
-#         ('bedeckt', 'Bedeckt'),
-#     ], string='Wetter')
-#     malfunctions = fields.Char('Mängel')
+    datetime = fields.Datetime(string="Datum/Zeit")
+    temperature = fields.Char('Temperatur in ℃')
+    wheather = fields.Selection([
+        ('sonne', 'Sonne'),
+        ('regen', 'Regen'),
+        ('bedeckt', 'Bedeckt'),
+    ], string='Wetter')
+    malfunctions = fields.Char('Mängel')
 
-#     bca_operating_hours = fields.Integer('Operating Hours')
-#     bca_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
-#     bca_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
-#     phb_operating_hours = fields.Integer('Operating Hours')
-#     phb_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
-#     phb_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
+    earator_compressor_actuation_operating_hours = fields.Integer('Belüfter/Kompressor/Antrieb: Betrtiebsstunden')
+    earator_compressor_actuation_interval_pause_before = fields.Char('Belüfter/Kompressor/Antrieb: Laufzeit/Pause vorher')
+    earator_compressor_actuation_interval_pause_after = fields.Char('Belüfter/Kompressor/Antrieb: Laufzeit/Pause nachher')
+    phb_operating_hours = fields.Integer('Operating Hours')
+    phb_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
+    phb_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
 
 
 # class sewage_treatment_plants(models.Model):

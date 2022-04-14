@@ -67,7 +67,7 @@
     </field>
   </record>
 
-  <!-- <record id="fsm_order_form_stp" model="ir.ui.view">
+  <record id="fsm_order_form_stp" model="ir.ui.view">
     <field name="name">fsm.order.form.stp</field>
     <field name="model">fsm.order</field>
     <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
@@ -83,8 +83,7 @@
         </page>
       </page>
     </field>
-
-  </record> -->
+  </record>
 
     <!-- explicit list view definition -->
 <!--
