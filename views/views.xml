@@ -56,6 +56,17 @@
       </field>
   </record>
 
+  <record id="account_view_move_form_dbau" model="ir.ui.view">
+    <field name="name">account.view_move_form DBAU</field>
+    <field name="model">account.move_form</field>
+    <field name="inherit_id" ref="account.view_move_form" />
+    <field name="arch" type="xml">
+      <field name="partner_id" position="after">
+        <field name="partner_comment" />
+      </field>
+    </field>
+  </record>
+
   <!-- <record id="fsm_order_form_stp" model="ir.ui.view">
     <field name="name">fsm.order.form.stp</field>
     <field name="model">fsm.order</field>

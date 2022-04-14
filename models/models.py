@@ -72,6 +72,18 @@ class PartnerAzvLk(models.Model):
     )
 
 
+class AccountMoveSTP(models.Model):
+    _inherit = "res.partner"
+    _description = "Add partner comment to invoice"
+
+    partner_comment = fields.Text(compute='_compute_partner_comment', string='Partner Comment')
+
+    @api.depends('partner_id.comment')
+    def _compute_partner_comment(self):
+        for invoice in self:
+            invoice.partner_comment = invoice.partner_id.comment
+
+
 class ContractContractSTP(models.Model):
     _inherit = "contract.contract"
     _description = "prevent setting invoice date from contracts."
