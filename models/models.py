@@ -73,7 +73,7 @@ class PartnerAzvLk(models.Model):
 
 
 class AccountMoveSTP(models.Model):
-    _inherit = "res.partner"
+    _inherit = "account.move"
     _description = "Add partner comment to invoice"
 
     partner_comment = fields.Text(compute='_compute_partner_comment', string='Partner Comment')

@@ -58,7 +58,7 @@
 
   <record id="account_view_move_form_dbau" model="ir.ui.view">
     <field name="name">account.view_move_form DBAU</field>
-    <field name="model">account.move_form</field>
+    <field name="model">account.move</field>
     <field name="inherit_id" ref="account.view_move_form" />
     <field name="arch" type="xml">
       <field name="partner_id" position="after">
