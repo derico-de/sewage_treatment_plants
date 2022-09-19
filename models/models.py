@@ -30,13 +30,13 @@ class PartnerBankAccountInfo(models.Model):
             bank_name = bank.bank_name or ""
             acc_number = bank.acc_number.replace(" ", "")
             # short info is only parts of the IBAN with optinal bank name
-            partner.bank_acc_info_short = (
-                "IBAN: {0}XX XXXX XXXX XXXX XX{1} {2}".format(
-                    acc_number[:2], acc_number[-4:-2], acc_number[-2:]
-                )
+            partner.bank_acc_info_short = "IBAN: {0}XX XXXX XXXX XXXX XX{1} {2}".format(
+                acc_number[:2], acc_number[-4:-2], acc_number[-2:]
             )
             if bank_name:
-                partner.bank_acc_info_short = partner.bank_acc_info_short + " bei der {0}.".format(bank_name)
+                partner.bank_acc_info_short = (
+                    partner.bank_acc_info_short + " bei der {0}.".format(bank_name)
+                )
 
 
 class ResPartnerBankAccMultiPartner(models.Model):
@@ -50,16 +50,11 @@ class ResPartnerBankAccMultiPartner(models.Model):
 
 class PartnerAzvLk(models.Model):
     _inherit = "res.partner"
-    _description = "Extend type selection list to add Abwasserzweckverband & co"
+    _description = "Extend type selection list to add Abwasserzweckverband & Landkreis"
     type = fields.Selection(
-        [
-            ("contact", "Contact"),
+        selection_add=[
             ("abwasserzweckverband", "Abwasserzweckverband"),
             ("landkreis", "Landkreis"),
-            ("invoice", "Invoice Address"),
-            ("delivery", "Delivery Address"),
-            ("other", "Other Address"),
-            ("private", "Private Address"),
         ],
         string="Address Type",
         default="contact",
@@ -85,9 +80,11 @@ class AccountMoveSTP(models.Model):
     _inherit = "account.move"
     _description = "Add partner comment to invoice"
 
-    partner_comment = fields.Text(compute='_compute_partner_comment', string='Partner Comment')
+    partner_comment = fields.Text(
+        compute="_compute_partner_comment", string="Partner Comment"
+    )
 
-    @api.depends('partner_id.comment')
+    @api.depends("partner_id.comment")
     def _compute_partner_comment(self):
         for invoice in self:
             invoice.partner_comment = invoice.partner_id.comment
@@ -150,12 +147,40 @@ class ContractContractSTP(models.Model):
         return invoice_vals, move_form
 
 
-class SewageTreatmentPlant(models.Model):
-    _inherit = ["mail.thread", "mail.activity.mixin"]
-    _name = "stm.stp"
+class SewageTreadmentPlant(models.Model):
+    _name = 'stp.stp'
+    _description = 'Sewage Treadment Plant'
+    # _inherit = ["mail.thread", "mail.activity.mixin"]
+    name = fields.Char("Anlagentyp", required="True")
+    manufacturer = fields.Char("Hersteller")
+    control_unit = fields.Char("Steuerung")
+    type_of_functional_unit = fields.Selection(
+        [
+            ("Tropfkörper", "Tropfkörper"),
+            ("Festbett", "Festbett"),
+            ("SBR", "SBR"),
+            ("Pflanzenbeet", "Planzenbeet"),
+            ("Launhardt-R.", "Launhardt-R."),
+            ("Teichanlage", "Teichanlage"),
+        ],
+        "Art der Kleinkläranlage/Funktionseinheit"
+    )
+    method_of_construction = fields.Selection(
+        [
+            ("Beton", "Beton"),
+            ("Kunststoff", "Kunststoff"),
+        ],
+        "Art der Kleinkläranlage/Funktionseinheit"
+    )
 
-    name = fields.Char(string="Name", required="True")
-    partner_id = fields.Many2one("res.partner", string="Partner")
+
+class SewageTreatmentPlantLocation(models.Model):
+    _inherit = ["fsm.location"]
+
+    # name = fields.Char(string="Name", required="True")
+    # partner_id = fields.Many2one("res.partner", string="Partner")
+    ew = fields.Char('EW', help="Anzahl an Einwohnern für welche die Kläranlage ausgelegt ist.")
+    stp_stp_id = fields.Many2one('stp.stp', string='Anlage')
 
 
 class SewageTreatmentPlantMaintenance(models.Model):
