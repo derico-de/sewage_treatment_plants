@@ -29,7 +29,6 @@
 
   </record>
 
-
   <record id="view_partner_form_extended" model="ir.ui.view">
     <field name="name">res.partner.form.extended</field>
     <field name="model">res.partner</field>
@@ -80,10 +79,148 @@
             <field name="wheather" />
             <field name="malfunctions" />
           </group>
+          <group name="operating_hours_interval_pause" col="4">
+            <!-- <group name="operating_hours_label"  string="Bestriebsstunden" colspan="2" col="1">
+              <label for="earator_compressor_actuation_operating_hours" string="Belüfter/Kompressor/Antrieb" />
+              <label for="pump_lifter_charger_operating_hours" string="Pumpe/Heber Beschickung" />
+              <label for="pump_lifter_sludge_operating_hours" string="Pumpe/Heber Schlamm" />
+              <label for="pump_lifter_decandted_water_operating_hours" string="Pumpe/Heber Klarwasser" />
+              <label for="pump_lifter_reflux_operating_hours" string="Pumpe/Heber Rücklauf" />
+              <label for="pump_lifter_post_purification_operating_hours" string="Pumpe/Heber Nachklärung" />
+            </group> -->
+            <group name="operating_hours" string="[h]" col="3" colspan="2">
+              <field name="earator_compressor_actuation_operating_hours" options="{'format': 0}" />
+              <field name="pump_lifter_charger_operating_hours"  options="{'format': 0}" />
+              <field name="pump_lifter_sludge_operating_hours" options="{'format': 0}" />
+              <field name="pump_lifter_decandted_water_operating_hours" options="{'format': 0}" />
+              <field name="pump_lifter_reflux_operating_hours" options="{'format': 0}" />
+              <field name="pump_lifter_post_purification_operating_hours" options="{'format': 0}" />
+            </group>
+            <group name="interval_pause_before" string="Laufzeit/Pause" col="1">
+              <field name="earator_compressor_actuation_interval_pause_before" nolabel="1" />
+              <field name="pump_lifter_charger_interval_pause_before" nolabel="1" />
+              <field name="pump_lifter_sludge_interval_pause_before" nolabel="1" />
+              <field name="pump_lifter_decandted_water_interval_pause_before" nolabel="1" />
+              <field name="pump_lifter_reflux_interval_pause_before" nolabel="1" />
+              <field name="pump_lifter_post_purification_interval_pause_before" nolabel="1" />
+            </group>
+            <group name="interval_pause_after" string="geändert auf" col="1">
+              <field name="earator_compressor_actuation_interval_pause_after" nolabel="1" />
+              <field name="pump_lifter_charger_interval_pause_after" nolabel="1" />
+              <field name="pump_lifter_sludge_interval_pause_after" nolabel="1" />
+              <field name="pump_lifter_decandted_water_interval_pause_after" nolabel="1" />
+              <field name="pump_lifter_reflux_interval_pause_after" nolabel="1" />
+              <field name="pump_lifter_post_purification_interval_pause_after" nolabel="1" />
+            </group>
+          </group>
+          <group name="collected_parameters" string="Ermittelte Parameter" col="6">
+            <group name="collected_parameters_left" col="3" colspan="3">
+              <field name="csb" />
+              <field name="bsb5" />
+              <field name="o2" />
+              <field name="ph" />
+              <field name="sludgevol" />
+            </group>
+            <group name="collected_parameters_right" col="3" colspan="3">
+              <field name="sedimentable_materials" />
+              <field name="layer_depth" />
+              <field name="smell" />
+              <field name="color" />
+              <field name="temperature" />
+            </group>
+          </group>
+          <group name="pre_clarification_sludge_storage" string="Vorklärung/Schlammspeicher-Schlammspiegel" col="6">
+            <group name="pre_clarification_sludge_storage1" col="1">
+              <label for="water_depth" />
+              <field name="water_depth" nolabel="1" />
+            </group>
+            <group name="pre_clarification_sludge_storage2" col="1">
+              <label for="chamber1" />
+              <field name="chamber1" nolabel="1" />
+            </group>
+            <group name="pre_clarification_sludge_storage3" col="1">
+              <label for="chamber2" />
+              <field name="chamber2" nolabel="1" />
+            </group>
+            <group name="pre_clarification_sludge_storage4" col="1">
+              <label for="chamber3" />
+              <field name="chamber3" nolabel="1" />
+            </group>
+            <group name="pre_clarification_sludge_storage5" col="1">
+              <label for="chamber4" />
+              <field name="chamber4" nolabel="1" />
+            </group>
+            <group name="pre_clarification_sludge_storage6" col="1">
+              <label for="sludge_fraction" />
+              <field name="sludge_fraction" nolabel="1" />
+            </group>
+          </group>
+          <group name="sludge_removal_storage_level" string="Schlammabfuhr veranlassen" col="4">
+            <group name="sludge_removal_storage_level1" colspan="4" col="4">
+              <field name="sludge_removal_chamber" />
+              <field name="sludge_removal_chamber_comment" />
+            </group>
+            <group name="sludge_removal_storage_level1" colspan="4" col="4">
+              <field name="sludge_removal_chamber_oder" />
+              <field name="sludge_removal_chamber_oder_month" />
+            </group>
+          </group>
+          <group name="checks" col="4">
+            <field name="regular_maintenance_of_the_log_book" />
+            <field name="service_order" />
+          </group>
         </page>
       </page>
     </field>
   </record>
+
+  <record id="fsm_location_form_stp" model="ir.ui.view">
+    <field name="name">fsm.location.form.stp</field>
+    <field name="model">fsm.location</field>
+    <field name="inherit_id" ref="fieldservice.fsm_location_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//notebook/page[1]" position="before">
+        <page string="Anlagendetails" name="stp_details">
+          <group name="stp_details" col="4">
+            <field name="stp_stp_id" />
+            <field name="ew" />
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="stp_stp_tree_view" model="ir.ui.view">
+    <field name="name">stp.stp.tree</field>
+    <field name="model">stp.stp</field>
+    <field name="arch" type="xml">
+      <tree string="">
+        <field name="manufacturer" />
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_fsm_stp_stp" model="ir.actions.act_window">
+    <field name="name">Anlagentypen</field>
+    <field name="res_model">stp.stp</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[]</field>
+    <field name="context">{}</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+          Add a Field Service Recurring Orders here.
+      </p>
+    </field>
+  </record>
+
+  <menuitem
+      id="menu_fsm_dash_stp_stp"
+      name="Anlagentypen"
+      action="action_fsm_stp_stp"
+      parent="fieldservice.data"
+      sequence="20"
+      groups="stp_group_manager"
+  />
 
     <!-- explicit list view definition -->
 <!--
