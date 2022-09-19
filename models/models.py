@@ -39,6 +39,15 @@ class PartnerBankAccountInfo(models.Model):
                 partner.bank_acc_info_short = partner.bank_acc_info_short + " bei der {0}.".format(bank_name)
 
 
+class ResPartnerBankAccMultiPartner(models.Model):
+    _inherit = "res.partner.bank"
+    _description = "allow the same bank account (acc) to be used on multiple partners"
+
+
+    _sql_constraints = [
+        ('unique_number', 'unique(sanitized_acc_number, company_id, partner_id)', 'Account Number must be unique2'),
+    ]
+
 class PartnerAzvLk(models.Model):
     _inherit = "res.partner"
     _description = "Extend type selection list to add Abwasserzweckverband & co"
