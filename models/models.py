@@ -150,12 +150,12 @@ class ContractContractSTP(models.Model):
         return invoice_vals, move_form
 
 
-class SewageTreatmentPlant(models.Model):
-    _inherit = ["mail.thread", "mail.activity.mixin"]
-    _name = "stm.stp"
+# class SewageTreatmentPlant(models.Model):
+#     _inherit = ["mail.thread", "mail.activity.mixin"]
+#     _name = "stm.stp"
 
-    name = fields.Char(string="Name", required="True")
-    partner_id = fields.Many2one("res.partner", string="Partner")
+#     name = fields.Char(string="Name", required="True")
+#     partner_id = fields.Many2one("res.partner", string="Partner")
 
 
 # class SewageTreatmentPlantMaintenance(models.Model):
