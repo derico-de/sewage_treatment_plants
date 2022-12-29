@@ -208,7 +208,81 @@ class SewageTreatmentPlantMaintenance(models.Model):
     pl_sludge_operating_hours = fields.Integer('Operating Hours')
     pl_sludge_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
     pl_sludge_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
+    pl_decandted_water_operating_hours = fields.Integer('Operating Hours')
+    pl_decandted_water_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
+    pl_decandted_water_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
+    pl_reflux_water_operating_hours = fields.Integer('Operating Hours')
+    pl_reflux_water_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
+    pl_reflux_water_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
+    pl_post_purification_operating_hours = fields.Integer('Operating Hours')
+    pl_post_purification_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
+    pl_post_purification_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
 
+    # collected parameters table
+    csb = fields.Float("CSB in mg/l")
+    bsb5 = fields.Float("BSB5 in mg/l")
+    o2 = fields.Float("O2 in mg/l")
+    ph = fields.Float("pH")
+    sludgevol = fields.Float("Schlammvol. in ml/l")
+    sedimentable_materials = fields.Float("Absetzbare Stoffe in ml/l")
+    layer_depth = fields.Float("Schichttiefe in cm")
+    smell = fields.Selection(
+        [
+            ("neutral", "neutral"),
+            ("leicht muffig", "leicht muffig"),
+            ("jauchig", "jauchig"),
+        ],
+        string="Geruch",
+    )
+    color = fields.Selection(
+        [("klar", "klar"), ("leicht trüb", "leicht trüb"), ("trüb", "trüb")],
+        string="Farbe",
+    )
+    temperature = fields.Float("Temperatur in ℃")
+
+    # pre-clarification / sludge storage/level
+    water_depth = fields.Float("Wassertiefe in m")
+    chamber1 = fields.Float("Kammer 1 in m")
+    chamber2 = fields.Float("Kammer 2 in m")
+    chamber3 = fields.Float("Kammer 3 in m")
+    chamber4 = fields.Float("Kammer 4 in m")
+    sludge_fraction = fields.Char("Schlammanteil in %")
+
+    # order sludge removal?
+    sludge_removal_chamber = fields.Selection(
+        [
+            ("1", "1"),
+            ("2", "2"),
+            ("3", "3"),
+            ("4", "4"),
+        ],
+        string="Kammer",
+    )
+    sludge_removal_chamber_comment = fields.Char("sonst. Kammer")
+    sludge_removal_chamber_oder = fields.Boolean("Abfuhr veranlassen")
+    sludge_removal_chamber_oder_month = fields.Selection(
+        [
+            ("Januar", "Januar"),
+            ("Februar", "Februar"),
+            ("März", "März"),
+            ("April", "April"),
+            ("Mai", "Mai"),
+            ("Juni", "Juni"),
+            ("Julie", "Julie"),
+            ("August", "August"),
+            ("September", "September"),
+            ("Oktober", "Oktober"),
+            ("November", "November"),
+            ("Dezember", "Dezember"),
+        ],
+        string="Monat",
+    )
+
+    regular_maintenance_of_the_log_book = fields.Boolean("Regelmäßige Führung des Betriebsbuches")
+    service_order = fields.Boolean("Auftrag zur Mängelbeseitigung")
+
+    poweroutage = fields.Char('Netzausfall')
+    service_note = fields.Char('Bemerkung')
 
 # class sewage_treatment_plants(models.Model):
 #     _name = 'sewage_treatment_plants.sewage_treatment_plants'
