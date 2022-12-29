@@ -205,6 +205,9 @@ class SewageTreatmentPlantMaintenance(models.Model):
     pl_charger_operating_hours = fields.Integer('Operating Hours')
     pl_charger_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
     pl_charger_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
+    pl_sludge_operating_hours = fields.Integer('Operating Hours')
+    pl_sludge_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
+    pl_sludge_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
 
 
 # class sewage_treatment_plants(models.Model):
