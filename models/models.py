@@ -37,11 +37,14 @@ class PartnerBankAccountInfo(models.Model):
                 partner.bank_acc_info_short = (
                     partner.bank_acc_info_short + " bei der {0}.".format(bank_name)
                 )
+<<<<<<< HEAD
 
 
 class ResPartnerBankAccMultiPartner(models.Model):
     _inherit = "res.partner.bank"
     _description = "allow the same bank account (acc) to be used on multiple partners"
+=======
+>>>>>>> 4cb661a226bcd7b7714e466da05647c010b5618b
 
 
     _sql_constraints = [
