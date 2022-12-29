@@ -37,19 +37,17 @@ class PartnerBankAccountInfo(models.Model):
                 partner.bank_acc_info_short = (
                     partner.bank_acc_info_short + " bei der {0}.".format(bank_name)
                 )
-<<<<<<< HEAD
 
 
 class ResPartnerBankAccMultiPartner(models.Model):
     _inherit = "res.partner.bank"
     _description = "allow the same bank account (acc) to be used on multiple partners"
-=======
->>>>>>> 4cb661a226bcd7b7714e466da05647c010b5618b
 
 
     _sql_constraints = [
         ('unique_number', 'unique(sanitized_acc_number, company_id, partner_id)', 'Account Number must be unique'),
     ]
+
 
 class PartnerAzvLk(models.Model):
     _inherit = "res.partner"
@@ -204,9 +202,9 @@ class SewageTreatmentPlantMaintenance(models.Model):
     earator_compressor_actuation_operating_hours = fields.Integer('Belüfter/Kompressor/Antrieb: Betrtiebsstunden')
     earator_compressor_actuation_interval_pause_before = fields.Char('Belüfter/Kompressor/Antrieb: Laufzeit/Pause vorher')
     earator_compressor_actuation_interval_pause_after = fields.Char('Belüfter/Kompressor/Antrieb: Laufzeit/Pause nachher')
-    phb_operating_hours = fields.Integer('Operating Hours')
-    phb_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
-    phb_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
+    pl_charger_operating_hours = fields.Integer('Operating Hours')
+    pl_charger_interval_pause_before = fields.Char('Laufzeit/Pause vorher')
+    pl_charger_interval_pause_after = fields.Char('Laufzeit/Pause nachher')
 
 
 # class sewage_treatment_plants(models.Model):
