@@ -30,23 +30,43 @@ class PartnerBankAccountInfo(models.Model):
             bank_name = bank.bank_name or ""
             acc_number = bank.acc_number.replace(" ", "")
             # short info is only parts of the IBAN with optinal bank name
-            partner.bank_acc_info_short = (
-                "IBAN: {0}XX XXXX XXXX XXXX XX{1} {2}".format(
-                    acc_number[:2], acc_number[-4:-2], acc_number[-2:]
-                )
+            partner.bank_acc_info_short = "IBAN: {0}XX XXXX XXXX XXXX XX{1} {2}".format(
+                acc_number[:2], acc_number[-4:-2], acc_number[-2:]
             )
             if bank_name:
-                partner.bank_acc_info_short = partner.bank_acc_info_short + " bei der {0}.".format(bank_name)
+                partner.bank_acc_info_short = (
+                    partner.bank_acc_info_short + " bei der {0}.".format(bank_name)
+                )
+
+
+class AccountBankStatementLineUnique(models.Model):
+    _inherit = "account.bank.statement.line"
+    _description = "make sure we only find the bank account of the parner, avoiding finding multiple entries with the same bank account"
+
+    def _find_or_create_bank_account(self):
+        bank_account = self.env['res.partner.bank'].search(
+            [('company_id', '=', self.company_id.id), ('acc_number', '=', self.account_number), ('partner_id', '=', self.partner_id.id)])
+        if not bank_account:
+            bank_account = self.env['res.partner.bank'].create({
+                'acc_number': self.account_number,
+                'partner_id': self.partner_id.id,
+                'company_id': self.company_id.id,
+            })
+        return bank_account
 
 
 class ResPartnerBankAccMultiPartner(models.Model):
     _inherit = "res.partner.bank"
     _description = "allow the same bank account (acc) to be used on multiple partners"
 
-
     _sql_constraints = [
-        ('unique_number', 'unique(sanitized_acc_number, company_id, partner_id)', 'Account Number must be unique'),
+        (
+            "unique_number",
+            "unique(sanitized_acc_number, company_id, partner_id)",
+            "Account Number must be unique",
+        ),
     ]
+
 
 class PartnerAzvLk(models.Model):
     _inherit = "res.partner"
@@ -85,9 +105,11 @@ class AccountMoveSTP(models.Model):
     _inherit = "account.move"
     _description = "Add partner comment to invoice"
 
-    partner_comment = fields.Text(compute='_compute_partner_comment', string='Partner Comment')
+    partner_comment = fields.Text(
+        compute="_compute_partner_comment", string="Partner Comment"
+    )
 
-    @api.depends('partner_id.comment')
+    @api.depends("partner_id.comment")
     def _compute_partner_comment(self):
         for invoice in self:
             invoice.partner_comment = invoice.partner_id.comment
